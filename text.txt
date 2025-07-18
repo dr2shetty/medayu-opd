@@ -1,0 +1,27 @@
+# Re-import missing modules after kernel reset
+import os
+import zipfile
+
+# Re-declare project directory
+project_dir = "/mnt/data/medayu_opd_pdf"
+os.makedirs(project_dir, exist_ok=True)
+
+# Save main.py
+main_path = os.path.join(project_dir, "main.py")
+with open(main_path, "w") as f:
+    f.write(main_py_cleaned)
+
+# Save requirements.txt
+with open(os.path.join(project_dir, "requirements.txt"), "w") as f:
+    f.write("streamlit\nfpdf\n")
+
+# Zip the project
+zip_path = "/mnt/data/medayu_opd_pdf.zip"
+with zipfile.ZipFile(zip_path, 'w') as zipf:
+    for foldername, subfolders, filenames in os.walk(project_dir):
+        for filename in filenames:
+            filepath = os.path.join(foldername, filename)
+            arcname = os.path.relpath(filepath, project_dir)
+            zipf.write(filepath, arcname)
+
+zip_path
